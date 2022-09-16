@@ -1,0 +1,120 @@
+{
+  "root": true,
+  "extends": [
+    "airbnb",
+    "airbnb-typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": [
+      "./tsconfig.json"
+    ]
+  },
+  "plugins": [
+    "jsx-a11y",
+    "react-hooks",
+    "eslint-plugin-import"
+  ],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react/jsx-props-no-spreading": 0,
+    "react/button-has-type": [
+      "off"
+    ],
+    "padded-blocks": "off",
+    "max-len": [
+      "off",
+      {
+        "code": 140
+      }
+    ],
+    "no-underscore-dangle": "off",
+    "import/prefer-default-export": "off",
+    "arrow-body-style": "off",
+    "react/prop-types": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "jsx-a11y/media-has-caption": "off",
+    "jsx-a11y/label-has-for": [
+      "off",
+      {
+        "required": {
+          "some": [
+            "nesting",
+            "id"
+          ]
+        }
+      }
+    ],
+    "jsx-a11y/label-has-associated-control": [
+      "off",
+      {
+        "required": {
+          "some": [
+            "nesting",
+            "id"
+          ]
+        }
+      }
+    ],
+    "no-param-reassign": "off",
+    "no-console": "off",
+    "linebreak-style": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "@app/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "@assets/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "@components/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "@routes/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "builtin"
+        ],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  },
+  "ignorePatterns": [
+    "src/**/*props.ts",
+    "index.d.ts",
+    "src/test/**/*",
+    "src/**/*generated.ts",
+    "src/**/*deprecated.ts",
+    "src/setupTests.ts",
+    "commitlint.config.js",
+    "config/*.js",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "postcss.config.js",
+    "webpack.config.js",
+    "player.js"
+  ]
+}
