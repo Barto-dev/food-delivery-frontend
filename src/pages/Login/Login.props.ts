@@ -1,3 +1,4 @@
-export interface LoginProps {
-
+export interface ILoginForm {
+  email?: string;
+  password?: string;
 }
