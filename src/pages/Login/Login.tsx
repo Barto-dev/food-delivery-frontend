@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { gql, useMutation } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 
+import FormError from '../../components/FormError/FormError';
 import {
   EMAIL_REQUIRED,
   PASSWORD_REQUIRED,
@@ -9,13 +11,31 @@ import {
 } from '../../config/authErrors';
 import { ILoginForm } from './Login.props';
 
+const LOGIN_MUTATION = gql`
+  mutation loginMutation($email: String!, $password: String!) {
+    login(input: {email: $email, password: $password}) {
+      ok
+      error
+      token
+    }
+  }
+`;
+
 const Login = () => {
   const {
     register, getValues, formState, handleSubmit,
   } = useForm<ILoginForm>();
+  const [loginMutation, { data, error, loading }] = useMutation(LOGIN_MUTATION);
 
   const onLoginSubmit = () => {
-    console.log(getValues());
+    const { email, password } = getValues();
+    loginMutation({
+      variables: {
+        input: {
+          email, password,
+        },
+      },
+    });
   };
 
   return (
@@ -31,8 +51,7 @@ const Login = () => {
               required
               {...register('email', { required: EMAIL_REQUIRED })}
             />
-            {formState.errors.email?.message
-              && <span className="font-medium text-red-500">{formState.errors.email.message}</span>}
+            {formState.errors.email?.message && <FormError errorMessage={formState.errors.email.message} />}
           </div>
           <div className="w-full flex flex-col">
             <input
@@ -40,10 +59,12 @@ const Login = () => {
               type="password"
               className="input"
               required
-              {...register('password', { required: PASSWORD_REQUIRED, minLength: { value: 6, message: PASSWORD_MIN_LENGTH } })}
+              {...register('password', {
+                required: PASSWORD_REQUIRED,
+                minLength: { value: 6, message: PASSWORD_MIN_LENGTH },
+              })}
             />
-            {formState.errors.password?.message
-              && <span className="font-medium text-red-500">{formState.errors.password.message}</span>}
+            {formState.errors.password?.message && <FormError errorMessage={formState.errors.password.message} />}
           </div>
           <button className="button">Log in</button>
         </form>
