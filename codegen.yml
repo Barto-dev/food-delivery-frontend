@@ -1,0 +1,33 @@
+overwrite: true
+schema: "${VITE_GRAPHQL_ENDPOINT}"
+documents: "src/**/*.graphql"
+generates:
+  src/generated/types.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "named-operations-object"
+      - add:
+          content:
+            - "/* eslint-disable */"
+            - "/* NOTE: THIS IS AN AUTO-GENERATED FILE. DO NOT MODIFY IT DIRECTLY. */"
+    config:
+      avoidOptionals:
+        field: true
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: generated/types.ts
+    plugins:
+      - "typescript-operations"
+      - "typescript-react-apollo"
+      - add:
+          content:
+            - "/* eslint-disable */"
+            - "/* NOTE: THIS IS AN AUTO-GENERATED FILE. DO NOT MODIFY IT DIRECTLY. */"
+    config:
+      avoidOptionals:
+        field: true
+
+
