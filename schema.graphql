@@ -1,45 +1,43 @@
 # This file was generated based on ".graphqlconfig". Do not edit manually.
 
 schema {
-    query: Query
-    mutation: Mutation
+  query: Query
+  mutation: Mutation
+}
+
+type CreateAccountOutput {
+  error: String
+  ok: Boolean!
+}
+
+type LoginOutput {
+  error: String
+  ok: Boolean!
+  token: String!
 }
 
 type Mutation {
-    createRestaurant(input: CreateRestaurantDto!): Boolean!
-    updateRestaurant(input: UpdateRestaurantDto!): Boolean!
+  createAccount(input: CreateAccountInput!): CreateAccountOutput!
+  login(input: LoginInput!): LoginOutput!
 }
 
 type Query {
-    restaurants: [Restaurant!]!
+  hi: Boolean!
 }
 
-type Restaurant {
-    address: String!
-    categoryName: String!
-    id: Float!
-    isVegan: Boolean!
-    name: String!
-    ownerName: String
+enum UserRole {
+  Client
+  Delivery
+  Owner
 }
 
-input CreateRestaurantDto {
-    address: String!
-    categoryName: String!
-    isVegan: Boolean = true
-    name: String!
-    ownerName: String
+input CreateAccountInput {
+  email: String!
+  password: String!
+  role: UserRole!
 }
 
-input UpdateRestaurantDto {
-    data: UpdateRestaurantInputType!
-    id: Float!
-}
-
-input UpdateRestaurantInputType {
-    address: String
-    categoryName: String
-    isVegan: Boolean = true
-    name: String
-    ownerName: String
+input LoginInput {
+  email: String!
+  password: String!
 }

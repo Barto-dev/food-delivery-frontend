@@ -1,35 +1,35 @@
 import React from 'react';
 
-import { gql, useMutation } from '@apollo/client';
 import { useForm } from 'react-hook-form';
 
+import nuberLogo from '../../assets/logo.svg';
 import FormError from '../../components/FormError/FormError';
 import {
   EMAIL_REQUIRED,
   PASSWORD_REQUIRED,
   PASSWORD_MIN_LENGTH,
 } from '../../config/authErrors';
+import { LoginMutation, useLoginMutation } from '../../graphql/mutations/login.generated';
 import { ILoginForm } from './Login.props';
-
-const LOGIN_MUTATION = gql`
-  mutation loginMutation($email: String!, $password: String!) {
-    login(input: {email: $email, password: $password}) {
-      ok
-      error
-      token
-    }
-  }
-`;
 
 const Login = () => {
   const {
     register, getValues, formState, handleSubmit,
   } = useForm<ILoginForm>();
-  const [loginMutation, { data, error, loading }] = useMutation(LOGIN_MUTATION);
+  const onCompleted = (data: LoginMutation) => {
+    const { login: { ok, token } } = data;
+    if (ok) {
+      console.log(token);
+    }
+  };
 
-  const onLoginSubmit = () => {
+  const [loginMutation, { data: loginMutationResult, loading }] = useLoginMutation({
+    onCompleted,
+  });
+
+  const onLoginSubmit = async () => {
     const { email, password } = getValues();
-    loginMutation({
+    await loginMutation({
       variables: {
         input: {
           email, password,
@@ -39,10 +39,11 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-800">
-      <div className="bg-white w-full max-w-lg pt-10 pb-7 rounded-lg text-center">
-        <h1 className="text-2xl text-gray-800 pb-5">Log in</h1>
-        <form noValidate className="grid gap-5 px-5" onSubmit={handleSubmit(onLoginSubmit)}>
+    <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
+      <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
+        <img src={nuberLogo} alt="Nuber logo" className="w-52 mb-10" />
+        <h4 className="self-start text-3xl mb-5 font-medium">Welcome back</h4>
+        <form noValidate className="grid gap-5 w-full" onSubmit={handleSubmit(onLoginSubmit)}>
           <div className="w-full flex flex-col">
             <input
               placeholder="Email"
@@ -66,7 +67,12 @@ const Login = () => {
             />
             {formState.errors.password?.message && <FormError errorMessage={formState.errors.password.message} />}
           </div>
-          <button className="button">Log in</button>
+          <button
+            disabled={loading}
+            className="font-medium text-white p-3 text-lg bg-green-500 hover:bg-green-600 transition-colors"
+          >{loading ? 'Loading...' : 'Log in'}
+          </button>
+          {loginMutationResult?.login?.error && <FormError errorMessage={loginMutationResult.login.error} />}
         </form>
       </div>
     </div>
