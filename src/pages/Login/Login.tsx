@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
+import { LoginMutation, useLoginMutation } from '../../apolloHooks';
 import nuberLogo from '../../assets/logo.svg';
 import Button from '../../components/Button/Button';
 import FormError from '../../components/FormError/FormError';
@@ -12,7 +13,6 @@ import {
   PASSWORD_REQUIRED,
   PASSWORD_MIN_LENGTH,
 } from '../../config/authErrors';
-import { LoginMutation, useLoginMutation } from '../../graphql/mutations/login.generated';
 import { ILoginForm } from './Login.props';
 
 const Login = () => {

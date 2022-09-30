@@ -14,12 +14,10 @@ generates:
     config:
       avoidOptionals:
         field: true
-  src/:
-    preset: near-operation-file
-    presetConfig:
-      extension: .generated.ts
-      baseTypesPath: generated/types.ts
+  #  generate apollo hooks
+  src/apolloHooks/index.ts:
     plugins:
+      - "typescript"
       - "typescript-operations"
       - "typescript-react-apollo"
       - add:
@@ -29,5 +27,4 @@ generates:
     config:
       avoidOptionals:
         field: true
-
 

@@ -35,7 +35,7 @@ export type LoginOutput = {
   __typename?: 'LoginOutput';
   error: Maybe<Scalars['String']>;
   ok: Scalars['Boolean'];
-  token: Scalars['String'];
+  token: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -56,7 +56,7 @@ export type MutationLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  hi: Scalars['Boolean'];
+  sayHello: Scalars['String'];
 };
 
 export enum UserRole {
@@ -65,15 +65,23 @@ export enum UserRole {
   Owner = 'Owner'
 }
 
+export type CreateAccountMutationVariables = Exact<{
+  input: CreateAccountInput;
+}>;
+
+
+export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'CreateAccountOutput', ok: boolean, error: string | null } };
+
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginOutput', ok: boolean, error: string | null, token: string } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginOutput', ok: boolean, error: string | null, token: string | null } };
 
 export const namedOperations = {
   Mutation: {
+    createAccount: 'createAccount',
     login: 'login'
   }
 }
