@@ -1,8 +1,11 @@
 import React from 'react';
 
+import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import nuberLogo from '../../assets/logo.svg';
+import Button from '../../components/Button/Button';
 import FormError from '../../components/FormError/FormError';
 import {
   EMAIL_REQUIRED,
@@ -15,7 +18,9 @@ import { ILoginForm } from './Login.props';
 const Login = () => {
   const {
     register, getValues, formState, handleSubmit,
-  } = useForm<ILoginForm>();
+  } = useForm<ILoginForm>({
+    mode: 'onChange',
+  });
   const onCompleted = (data: LoginMutation) => {
     const { login: { ok, token } } = data;
     if (ok) {
@@ -40,10 +45,13 @@ const Login = () => {
 
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
+      <Helmet>
+        <title>Login | Nuber eats</title>
+      </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
         <img src={nuberLogo} alt="Nuber logo" className="w-52 mb-10" />
         <h4 className="self-start text-3xl mb-5 font-medium">Welcome back</h4>
-        <form noValidate className="grid gap-5 w-full" onSubmit={handleSubmit(onLoginSubmit)}>
+        <form noValidate className="grid gap-5 w-full mb-5" onSubmit={handleSubmit(onLoginSubmit)}>
           <div className="w-full flex flex-col">
             <input
               placeholder="Email"
@@ -67,13 +75,12 @@ const Login = () => {
             />
             {formState.errors.password?.message && <FormError errorMessage={formState.errors.password.message} />}
           </div>
-          <button
-            disabled={loading}
-            className="font-medium text-white p-3 text-lg bg-green-500 hover:bg-green-600 transition-colors"
-          >{loading ? 'Loading...' : 'Log in'}
-          </button>
+          <Button loading={loading} disabled={!formState.isValid}>Log in</Button>
           {loginMutationResult?.login?.error && <FormError errorMessage={loginMutationResult.login.error} />}
         </form>
+        <div>
+          <p>New to Nuber? <Link className="text-lime-600 hover:underline" to="/create-account">Create an account</Link> </p>
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,9 @@
+@import "../components/Button/Button.css";
+
 @tailwind base;
 @tailwind components;
-
 .input {
   @apply p-3 border text-lg font-light border-gray-200 outline-gray-500 focus:outline-none focus:border-gray-500
-}
-
-.button {
-  @apply py-3 px-5 bg-gray-800 text-white text-lg rounded-lg hover:opacity-90
 }
 
 @tailwind utilities;
