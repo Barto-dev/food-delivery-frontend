@@ -1,0 +1,5 @@
+.button {
+  @apply font-medium text-white p-3 text-lg bg-lime-500 transition-colors
+  hover:bg-lime-600
+  disabled:bg-gray-300 disabled:cursor-not-allowed
+}
