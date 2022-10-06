@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
+import { authToken, isLoggedInVar } from '../../apollo';
 import { LoginMutation, useLoginMutation } from '../../apolloHooks';
 import nuberLogo from '../../assets/logo.svg';
 import Button from '../../components/Button/Button';
@@ -12,10 +13,10 @@ import {
   EMAIL_REQUIRED,
   PASSWORD_REQUIRED,
   PASSWORD_MIN_LENGTH, EMAIL_PATTERN_MESSAGE,
-} from '../../config/authErrors';
-import { EMAIL_PATTERN } from '../../config/emailPattern';
+} from '../../constants/authErrors';
+import { EMAIL_PATTERN } from '../../constants/emailPattern';
+import { LOCAL_STORAGE_TOKEN } from '../../constants/token';
 import { ILoginForm } from './Login.props';
-import { isLoggedInVar } from '../../apollo';
 
 const Login = () => {
   const {
@@ -25,8 +26,9 @@ const Login = () => {
   });
   const onCompleted = (data: LoginMutation) => {
     const { login: { ok, token } } = data;
-    if (ok) {
-      console.log(token);
+    if (ok && token) {
+      localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
+      authToken(token);
       isLoggedInVar(true);
     }
   };

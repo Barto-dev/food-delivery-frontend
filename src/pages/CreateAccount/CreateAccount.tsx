@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -13,8 +13,8 @@ import {
   EMAIL_REQUIRED,
   PASSWORD_MIN_LENGTH,
   PASSWORD_REQUIRED,
-} from '../../config/authErrors';
-import { EMAIL_PATTERN } from '../../config/emailPattern';
+} from '../../constants/authErrors';
+import { EMAIL_PATTERN } from '../../constants/emailPattern';
 import { ICreateAccountForm } from './CreateAccount.props';
 
 const CreateAccount = () => {
