@@ -11,9 +11,11 @@ import FormError from '../../components/FormError/FormError';
 import {
   EMAIL_REQUIRED,
   PASSWORD_REQUIRED,
-  PASSWORD_MIN_LENGTH,
+  PASSWORD_MIN_LENGTH, EMAIL_PATTERN_MESSAGE,
 } from '../../config/authErrors';
+import { EMAIL_PATTERN } from '../../config/emailPattern';
 import { ILoginForm } from './Login.props';
+import { isLoggedInVar } from '../../apollo';
 
 const Login = () => {
   const {
@@ -25,6 +27,7 @@ const Login = () => {
     const { login: { ok, token } } = data;
     if (ok) {
       console.log(token);
+      isLoggedInVar(true);
     }
   };
 
@@ -58,7 +61,13 @@ const Login = () => {
               type="email"
               className="input"
               required
-              {...register('email', { required: EMAIL_REQUIRED })}
+              {...register('email', {
+                required: EMAIL_REQUIRED,
+                pattern: {
+                  value: EMAIL_PATTERN,
+                  message: EMAIL_PATTERN_MESSAGE,
+                },
+              })}
             />
             {formState.errors.email?.message && <FormError errorMessage={formState.errors.email.message} />}
           </div>

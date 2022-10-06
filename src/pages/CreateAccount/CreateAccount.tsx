@@ -2,16 +2,23 @@ import React from 'react';
 
 import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { useCreateAccountMutation, UserRole } from '../../apolloHooks';
+import { useCreateAccountMutation, UserRole, CreateAccountMutation } from '../../apolloHooks';
 import nuberLogo from '../../assets/logo.svg';
 import Button from '../../components/Button/Button';
 import FormError from '../../components/FormError/FormError';
-import { EMAIL_REQUIRED, PASSWORD_MIN_LENGTH, PASSWORD_REQUIRED } from '../../config/authErrors';
+import {
+  EMAIL_PATTERN_MESSAGE,
+  EMAIL_REQUIRED,
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_REQUIRED,
+} from '../../config/authErrors';
+import { EMAIL_PATTERN } from '../../config/emailPattern';
 import { ICreateAccountForm } from './CreateAccount.props';
 
 const CreateAccount = () => {
+  const navigate = useNavigate();
   const {
     register, getValues, formState, handleSubmit,
   } = useForm<ICreateAccountForm>({
@@ -21,16 +28,28 @@ const CreateAccount = () => {
     },
   });
 
-  const [createAccountMutation] = useCreateAccountMutation();
+  const onCompleted = (data: CreateAccountMutation) => {
+    const { createAccount: { ok } } = data;
+    if (ok) {
+      navigate('/');
+    }
+  };
+
+  const [createAccountMutation, {
+    loading: createAccountLoading,
+    data: createAccountResult,
+  }] = useCreateAccountMutation({
+    onCompleted,
+  });
 
   const onLoginSubmit = async () => {
-    const { email, password } = getValues();
+    const { email, password, role } = getValues();
     await createAccountMutation({
       variables: {
         input: {
           email,
           password,
-          role: UserRole.Client,
+          role,
         },
       },
     });
@@ -51,7 +70,13 @@ const CreateAccount = () => {
               type="email"
               className="input"
               required
-              {...register('email', { required: EMAIL_REQUIRED })}
+              {...register('email', {
+                required: EMAIL_REQUIRED,
+                pattern: {
+                  value: EMAIL_PATTERN,
+                  message: EMAIL_PATTERN_MESSAGE,
+                },
+              })}
             />
             {formState.errors.email?.message && <FormError errorMessage={formState.errors.email.message} />}
           </div>
@@ -78,7 +103,12 @@ const CreateAccount = () => {
               ))}
             </select>
           </div>
-          <Button loading={false} disabled={!formState.isValid}>Create account</Button>
+          <Button
+            loading={createAccountLoading}
+            disabled={!formState.isValid}
+          >Create account
+          </Button>
+          {createAccountResult?.createAccount?.error && <FormError errorMessage={createAccountResult.createAccount.error} />}
         </form>
         <div>
           <p>Already have an account? <Link className="text-lime-600 hover:underline" to="/">Log in now</Link>
