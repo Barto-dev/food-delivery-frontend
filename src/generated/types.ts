@@ -56,7 +56,14 @@ export type MutationLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  sayHello: Scalars['String'];
+  me: User;
+};
+
+export type User = {
+  __typename?: 'User';
+  email: Scalars['String'];
+  password: Scalars['String'];
+  role: UserRole;
 };
 
 export enum UserRole {
@@ -79,7 +86,15 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginOutput', ok: boolean, error: string | null, token: string | null } };
 
+export type UserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserQuery = { __typename?: 'Query', me: { __typename?: 'User', email: string, role: UserRole } };
+
 export const namedOperations = {
+  Query: {
+    user: 'user'
+  },
   Mutation: {
     createAccount: 'createAccount',
     login: 'login'

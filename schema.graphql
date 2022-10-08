@@ -13,7 +13,7 @@ type CreateAccountOutput {
 type LoginOutput {
   error: String
   ok: Boolean!
-  token: String!
+  token: String
 }
 
 type Mutation {
@@ -22,7 +22,13 @@ type Mutation {
 }
 
 type Query {
-  hi: Boolean!
+  me: User!
+}
+
+type User {
+  email: String!
+  password: String!
+  role: UserRole!
 }
 
 enum UserRole {
