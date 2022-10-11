@@ -1,7 +1,10 @@
 import React from 'react';
 
+import { BrowserRouter, Routes } from 'react-router-dom';
+
 import { isLoggedInVar } from '../apollo';
 import { useUserQuery } from '../apolloHooks';
+import ClientRoutes from '../pages/client';
 
 const LoggedInRouter = () => {
   const { data: userData, loading: userLoading, error: userError } = useUserQuery();
@@ -18,10 +21,11 @@ const LoggedInRouter = () => {
     isLoggedInVar(false);
   };
   return (
-    <div>
-      <h1>{userData.me.email}</h1>
-      <button onClick={onLogoutClick}>Logout</button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {userData.me.role === 'Client' && <ClientRoutes />}
+      </Routes>
+    </BrowserRouter>
   );
 };
 
