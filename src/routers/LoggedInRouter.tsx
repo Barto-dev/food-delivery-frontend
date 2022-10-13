@@ -5,6 +5,7 @@ import { BrowserRouter, Routes } from 'react-router-dom';
 import { isLoggedInVar } from '../apollo';
 import { useUserQuery } from '../apolloHooks';
 import ClientRoutes from '../pages/client';
+import Header from '../components/Header/Header';
 
 const LoggedInRouter = () => {
   const { data: userData, loading: userLoading, error: userError } = useUserQuery();
@@ -22,6 +23,7 @@ const LoggedInRouter = () => {
   };
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         {userData.me.role === 'Client' && <ClientRoutes />}
       </Routes>
