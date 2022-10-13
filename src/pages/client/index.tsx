@@ -1,10 +1,14 @@
 import React from 'react';
 
+import { Route } from 'react-router-dom';
+
+import Restaurants from './Restaurants/Restaurants';
+
 const ClientRoutes = () => {
   return (
-    <div>
-      Client
-    </div>
+    <Route path="/">
+      <Restaurants />
+    </Route>
   );
 };
 
