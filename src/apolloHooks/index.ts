@@ -15,6 +15,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
 };
 
 export type CreateAccountInput = {
@@ -25,6 +26,17 @@ export type CreateAccountInput = {
 
 export type CreateAccountOutput = {
   __typename?: 'CreateAccountOutput';
+  error: Maybe<Scalars['String']>;
+  ok: Scalars['Boolean'];
+};
+
+export type EditProfileInput = {
+  email?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+};
+
+export type EditProfileOutput = {
+  __typename?: 'EditProfileOutput';
   error: Maybe<Scalars['String']>;
   ok: Scalars['Boolean'];
 };
@@ -44,12 +56,18 @@ export type LoginOutput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createAccount: CreateAccountOutput;
+  editProfile: EditProfileOutput;
   login: LoginOutput;
 };
 
 
 export type MutationCreateAccountArgs = {
   input: CreateAccountInput;
+};
+
+
+export type MutationEditProfileArgs = {
+  input: EditProfileInput;
 };
 
 
@@ -60,13 +78,30 @@ export type MutationLoginArgs = {
 export type Query = {
   __typename?: 'Query';
   me: User;
+  userProfile: UserProfileOutput;
+};
+
+
+export type QueryUserProfileArgs = {
+  userId: Scalars['Float'];
 };
 
 export type User = {
   __typename?: 'User';
+  createdAt: Scalars['DateTime'];
   email: Scalars['String'];
+  id: Scalars['Float'];
   password: Scalars['String'];
   role: UserRole;
+  updatedAt: Scalars['DateTime'];
+  verified: Scalars['Boolean'];
+};
+
+export type UserProfileOutput = {
+  __typename?: 'UserProfileOutput';
+  error: Maybe<Scalars['String']>;
+  ok: Scalars['Boolean'];
+  user: Maybe<User>;
 };
 
 export enum UserRole {
@@ -92,7 +127,7 @@ export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Lo
 export type UserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserQuery = { __typename?: 'Query', me: { __typename?: 'User', email: string, role: UserRole } };
+export type UserQuery = { __typename?: 'Query', me: { __typename?: 'User', email: string, role: UserRole, verified: boolean } };
 
 
 export const CreateAccountDocument = gql`
@@ -169,6 +204,7 @@ export const UserDocument = gql`
   me {
     email
     role
+    verified
   }
 }
     `;
