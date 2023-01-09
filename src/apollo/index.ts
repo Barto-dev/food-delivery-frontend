@@ -15,11 +15,17 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
+
+  const reqHeaders = {
+    ...headers,
+  };
+
+  if (authToken()) {
+    Object.assign(reqHeaders, { 'x-jwt': authToken() });
+  }
+
   return {
-    headers: {
-      ...headers,
-      'x-jwt': authToken() || '',
-    },
+    headers: reqHeaders,
   };
 });
 

@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <>
       {!userData?.me?.verified && (
-        <div className="bg-red-500 p-3 text-center text-sm text-white">
+        <div className="bg-red-500 p-3 text-center text-xs text-white">
           <span>Please verify your email</span>
         </div>
       )}

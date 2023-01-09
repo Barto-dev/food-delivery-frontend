@@ -43,6 +43,7 @@ const LoggedInRouter = () => {
         {/* {userData.me.role === 'Client' && ClientRoutes} */}
         {/* {userData.me.role === 'Delivery' && <ClientRoutes />} */}
         {/* {userData.me.role === 'Owner' && <ClientRoutes />} */}
+        <Route path="/confirm" element={<ConfirmEmail />} />
       </Routes>
     </BrowserRouter>
   );

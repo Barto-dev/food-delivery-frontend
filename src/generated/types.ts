@@ -55,6 +55,7 @@ export type Mutation = {
   createAccount: CreateAccountOutput;
   editProfile: EditProfileOutput;
   login: LoginOutput;
+  verifyEmail: VerifyEmailOutput;
 };
 
 
@@ -70,6 +71,11 @@ export type MutationEditProfileArgs = {
 
 export type MutationLoginArgs = {
   input: LoginInput;
+};
+
+
+export type MutationVerifyEmailArgs = {
+  input: VerifyEmailInput;
 };
 
 export type Query = {
@@ -107,6 +113,16 @@ export enum UserRole {
   Owner = 'Owner'
 }
 
+export type VerifyEmailInput = {
+  code: Scalars['String'];
+};
+
+export type VerifyEmailOutput = {
+  __typename?: 'VerifyEmailOutput';
+  error: Maybe<Scalars['String']>;
+  ok: Scalars['Boolean'];
+};
+
 export type CreateAccountMutationVariables = Exact<{
   input: CreateAccountInput;
 }>;
@@ -121,10 +137,17 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginOutput', ok: boolean, error: string | null, token: string | null } };
 
+export type VerifyEmailMutationVariables = Exact<{
+  input: VerifyEmailInput;
+}>;
+
+
+export type VerifyEmailMutation = { __typename?: 'Mutation', verifyEmail: { __typename?: 'VerifyEmailOutput', ok: boolean, error: string | null } };
+
 export type UserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserQuery = { __typename?: 'Query', me: { __typename?: 'User', email: string, role: UserRole, verified: boolean } };
+export type UserQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, email: string, role: UserRole, verified: boolean } };
 
 export const namedOperations = {
   Query: {
@@ -132,6 +155,7 @@ export const namedOperations = {
   },
   Mutation: {
     createAccount: 'createAccount',
-    login: 'login'
+    login: 'login',
+    verifyEmail: 'verifyEmail'
   }
 }
